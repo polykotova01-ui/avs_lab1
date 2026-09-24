@@ -42,15 +42,32 @@ chmod 750 claude_monet/office
 chmod 640 claude_monet/office/vika_payment
 
 echo "=== Шаг 3 и 4: Копирование, ссылки и фильтрация ==="
-mkdir -p claude_monet/warehouse/fish_backup
-cp claude_monet/fish_delivery/fedya_invoice claude_monet/warehouse/fish_backup/
-cp claude_monet/fish_delivery/freshness_report claude_monet/warehouse/fish_backup/
-cp claude_monet/meat_delivery/senya_invoice claude_monet/meat_delivery/invoice_duplicate
-ln -s claude_monet/office/vika_payment stock_link 2>/dev/null
+cp delivery_call claude_monet/office/call_copy
+cp -r claude_monet/fish_delivery claude_monet/warehouse/fish_backup
+ln -s claude_monet/warehouse/stock_list stock_link
+ln -s ../warehouse claude_monet/kitchen/warehouse_access
+ln claude_monet/meat_delivery/senya_invoice claude_monet/meat_delivery/invoice_duplicate
+cat claude_monet/meat_delivery/senya_invoice claude_monet/fish_delivery/fedya_invoice > claude_monet/warehouse/all_invoices
+cat claude_monet/warehouse/rejection_log >> claude_monet/kitchen/hot_station/barinov_claim
+mv claude_monet/kitchen/cold_station/fish_order claude_monet/office/urgent_fish_order
+
+ls -lR 2>/dev/null | grep "^-" | grep -v "copy" | sort -k5 -n | tail -n 5
+grep -riIh -e "поставщик" -e "продукт" claude_monet | grep -vi "утром" | sort | head -n 6
+grep -rl "рыб" claude_monet/fish_delivery claude_monet/warehouse/fish_backup 2>/dev/null | wc -l
+tail -n 2 claude_monet/meat_delivery/*_invoice claude_monet/fish_delivery/*_invoice 2>/dev/null | grep -v "==>" | grep -iE
+grep -vi "поставщик" claude_monet/warehouse/all_invoices | sort -r | head -n 3 | wc -w
+ls -lR 2>/dev/null | grep "^-" | awk '$2 == 2 {print}' | sort -k1 -n
+ls -lR 2>/dev/null | grep "^l" | sort -k9 | tail -n 1
 
 echo "=== Шаг 5: Очистка, фильтрация и удаление объектов ==="
 # Команды удаления из вашей истории терминала:
-rm -f claude_monet/warehouse/rejection_log
+rm claude_monet/office/call_copy
+rm stock_link
+rm claude_monet/kitchen/warehouse_access
+rm claude_monet/meat_delivery/invoice_duplicate
+rm claude_monet/office/urgent_fish_order
+rmdir claude_monet/kitchen/cold_station
+rm claude_monet/warehouse/rejection_log
 rm -rf claude_monet/warehouse/fish_backup
 
 echo "Выполнение всех пунктов лабораторной работы успешно автоматизировано!"
