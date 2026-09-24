@@ -42,8 +42,6 @@ chmod 750 claude_monet/office
 chmod 640 claude_monet/office/vika_payment
 
 echo "=== Шаг 3 и 4: Копирование, ссылки и фильтрация ==="
-# Воспроизводим операции копирования и создания ссылок, которые были до удаления
-# (Опираясь на лог удаления Git: дубликаты, бэкапы рыбы и символические ссылки)
 mkdir -p claude_monet/warehouse/fish_backup
 cp claude_monet/fish_delivery/fedya_invoice claude_monet/warehouse/fish_backup/
 cp claude_monet/fish_delivery/freshness_report claude_monet/warehouse/fish_backup/
