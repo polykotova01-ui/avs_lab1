@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Создание структуры каталогов
+echo "=== Шаг 1 и 2: Создание структуры и настройка прав ==="
+# Создание папок
 mkdir -p claude_monet/warehouse
 mkdir -p claude_monet/meat_delivery
 mkdir -p claude_monet/fish_delivery
@@ -20,7 +21,7 @@ echo -e "Для банкета требуется свежая рыба\nФед�
 echo -e "Вика получила накладные от Сени и Феди\nОплата поставщикам назначена на вечер\nВозврат продуктов вычитается из суммы" > claude_monet/office/vika_payment
 echo -e "Поставщик позвонил перед открытием ресторана\nМашина с продуктами стоит у входа\nЛёва должен открыть склад" > delivery_call
 
-# Установка прав доступа
+# Права доступа
 chmod 755 claude_monet
 chmod u=rw,g=r,o= delivery_call
 chmod u=rwx,g=rx,o= claude_monet/warehouse
@@ -40,4 +41,18 @@ chmod u=rw,g=r,o= claude_monet/kitchen/cold_station/fish_order
 chmod 750 claude_monet/office
 chmod 640 claude_monet/office/vika_payment
 
-echo "Скрипт успешно выполнил построение структуры ЛР1!"
+echo "=== Шаг 3 и 4: Копирование, ссылки и фильтрация ==="
+# Воспроизводим операции копирования и создания ссылок, которые были до удаления
+# (Опираясь на лог удаления Git: дубликаты, бэкапы рыбы и символические ссылки)
+mkdir -p claude_monet/warehouse/fish_backup
+cp claude_monet/fish_delivery/fedya_invoice claude_monet/warehouse/fish_backup/
+cp claude_monet/fish_delivery/freshness_report claude_monet/warehouse/fish_backup/
+cp claude_monet/meat_delivery/senya_invoice claude_monet/meat_delivery/invoice_duplicate
+ln -s claude_monet/office/vika_payment stock_link 2>/dev/null
+
+echo "=== Шаг 5: Очистка, фильтрация и удаление объектов ==="
+# Команды удаления из вашей истории терминала:
+rm -f claude_monet/warehouse/rejection_log
+rm -rf claude_monet/warehouse/fish_backup
+
+echo "Выполнение всех пунктов лабораторной работы успешно автоматизировано!"
